@@ -1,0 +1,49 @@
+REACT VITE 
+CHAKRA UI
+REACT ROUTER DOM
+
+
+"COLOR CHANGING FEATURES"
+CHAKRA UI
+ui design.. chakra components, dark/light.. Hard- coded
+toast ..useToast()
+CHAKRA UI HOOK "useColorMode", "colorMode", "toggleColorMode"
+
+
+"css "
+'Container from chakra ui"
+"Image from chakra ui"
+"Flex from chakra ui"
+"vertical stack from chakra ui"
+
+Icons from react Icons
+"BsInstagram"
+
+
+
+BACKEND USED TECK STACK AND ROUTES
+
+STACK USED
+- EXPRESS. USED MODULE METHOD ... SO USE IMPORT METHOD INSTEAD OF REQUIRE
+- JSONWEBTOKEN.
+- BCRYPTJS
+- DOTENV.
+- MONGOOSE.
+- COOKIE-PARSER.
+- NODEMON DEV DEPENDENCIES
+
+#POST#
+POST method to create post.
+POST method to like the post.
+POST  method to reply the post..
+DELETE method to delete the post..
+GET method to get the post.
+GET method to get the timeline
+
+#USER#
+POST method to sign up..
+PUT method to follow the user.
+PUT to update the profile ..
+POST  to login the user..
+POST  to logout the user..
+GET  method to get the profile of the user..
