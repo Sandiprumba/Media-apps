@@ -21,7 +21,7 @@ cloudinary.config({
 
 //middleware is a function it run between req and response
 //THIS IS A BUILT IN MIDDLEWARE.. it allow to parse incoming data from the req object..req.body
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 //TO PARSE FORM DATA FROM REQ.BODY EVEN IT THE REQ BODY HAS NESTED OBJECT ITS GONNA PARSE IT WITHOUT ANY PROBLEMS ..
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
