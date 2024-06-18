@@ -8,22 +8,21 @@ import userAtom from "../atoms/userAtom";
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
-  const setAuthLoginState = useSetRecoilState(authScreenAtom); //setter function from recoil
-
+  const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     name: "",
     username: "",
     email: "",
     password: "",
   });
-
+  const setAuthLoginState = useSetRecoilState(authScreenAtom); //setter function from recoil
   const showToast = useShowToast();
-
   //update the user state after sign up
   const setUser = useSetRecoilState(userAtom);
 
   //THE REASON FOR USING JSON STRINGIFY IS TO CONVERT THE INPUTS OBJECT IN TO A JSON STRING THIS IS NECESSARY BECAUSE FETCH API EXTECTS THE BODY CONTENT TO BE A STRING AND JSON(JAVASCRIPT OBJECT NOTATION) IS A COMMONLY USED FORMAT FOR TRANSMITTING STRUCTURED DATA OVER THE NETWORK ..
   const handleSignup = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -42,6 +41,8 @@ export default function SignupCard() {
       setUser(data);
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +95,7 @@ export default function SignupCard() {
                   bg: useColorModeValue("gray.700", "gray.800"),
                 }}
                 onClick={handleSignup}
+                isLoading={loading}
               >
                 Sign up
               </Button>
