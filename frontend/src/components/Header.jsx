@@ -7,6 +7,7 @@ import { RxAvatar } from "react-icons/rx";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtoms";
+import { BsFillChatQuoteFill } from "react-icons/bs";
 
 const Header = () => {
   //colorMode is a property provided byu chakra ui's useColormode hook that allows to access and control the current color mode of ui
@@ -34,6 +35,9 @@ const Header = () => {
         <Flex alignItems={"center"} gap={4}>
           <Link as={RouterLink} to={`/${user.username}`}>
             <RxAvatar size={24} />{" "}
+          </Link>
+          <Link as={RouterLink} to={`/chat`} onClick={"hello"}>
+            <BsFillChatQuoteFill size={20} />
           </Link>
 
           <Button size={"xs"} onClick={logout}>

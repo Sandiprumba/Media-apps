@@ -8,6 +8,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { extendTheme } from "@chakra-ui/theme-utils";
 import { RecoilRoot } from "recoil";
+import { SocketContextProvider } from "./context/SocketContext.jsx";
 
 //to change the color of the ui .. depending on the dark mode and light mode
 
@@ -51,7 +52,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <ChakraProvider theme={theme}>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
+          <SocketContextProvider>
+            <App />
+          </SocketContextProvider>
         </ChakraProvider>
       </BrowserRouter>
     </RecoilRoot>
