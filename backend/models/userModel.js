@@ -46,5 +46,5 @@ const userSchema = mongoose.Schema(
   }
 );
 //dont write users it should be upper case and singular ..
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;
