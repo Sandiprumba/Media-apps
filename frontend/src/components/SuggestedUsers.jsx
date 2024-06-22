@@ -10,7 +10,6 @@ const SuggestedUsers = () => {
 
   useEffect(() => {
     const getSuggestedUsers = async () => {
-      setLoading(true);
       try {
         const res = await fetch("/api/users/suggested");
         const data = await res.json();
