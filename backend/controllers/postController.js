@@ -13,8 +13,6 @@ const createPost = async (req, res) => {
 
     const user = await User.findById(postedBy);
 
-    console.log(user);
-
     if (!user) {
       return res.status(404).json({ error: "User not Found" });
     }
@@ -41,7 +39,6 @@ const createPost = async (req, res) => {
     res.status(201).json(newPost);
   } catch (error) {
     res.status(400).json({ error: error.message });
-    console.log("error creating post", error.message);
   }
 };
 
@@ -52,10 +49,8 @@ const getPost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
     res.status(200).json(post);
-    console.log("post found", post);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("error getting the posts", error.message);
   }
 };
 
@@ -76,7 +71,6 @@ const deletePost = async (req, res) => {
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.staus(500).json({ error: error.message });
-    console.log("error deleting the post", error.message);
   }
 };
 
@@ -105,7 +99,6 @@ const likeUnlikePost = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("error liking post", error.messsage);
   }
 };
 
@@ -133,7 +126,6 @@ const replyToPost = async (req, res) => {
     res.status(200).json(reply);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("error replying the post", error.message);
   }
 };
 
@@ -152,7 +144,6 @@ const getFeedPost = async (req, res) => {
     res.status(200).json(feedPosts);
   } catch (error) {
     res.status(400).json({ error: error.message });
-    console.log("error fetching the feed ", error.message);
   }
 };
 
@@ -168,7 +159,6 @@ const getUserPost = async (req, res) => {
     res.status(200).json(posts);
   } catch (error) {
     res.status(400).json({ errror: error.message });
-    console.log(error.message);
   }
 };
 export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost };

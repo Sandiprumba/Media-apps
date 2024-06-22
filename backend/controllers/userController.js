@@ -23,7 +23,6 @@ const getUserProfile = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("error getting profile", error.message);
   }
 };
 
@@ -73,7 +72,6 @@ const signupUser = async (req, res) => {
     res.status(500).json({
       error: error.message,
     });
-    console.log("Error signing up the user:", error.message);
   }
 };
 
@@ -88,6 +86,11 @@ const loginUser = async (req, res) => {
 
     if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
 
+    if (user.isFrozen) {
+      user.isFrozen = false;
+      await user.save();
+    }
+
     generateTokenAndSetCookies(user._id, res);
 
     res.status(200).json({
@@ -100,7 +103,6 @@ const loginUser = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error in login user", error.message);
   }
 };
 
@@ -111,7 +113,6 @@ const logoutUser = (req, res) => {
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error in singup User", error.message);
   }
 };
 
@@ -138,7 +139,6 @@ const followUnfollowUser = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error in followunfollow user ", error.message);
   }
 };
 
@@ -195,8 +195,47 @@ const updateUser = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error in updating user", error.message);
+  }
+};
+//exclude the current user and user that is followed and follwing by current user
+const getSuggestedUsers = async (req, res) => {
+  try {
+    const userId = req.user._id; //retrive the logged in user
+
+    const userFollowedByYou = await User.findById(userId).select("following");
+
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId },
+        },
+      },
+      {
+        $sample: { size: 10 },
+      },
+    ]);
+    const filteredUsers = users.filter((user) => !userFollowedByYou.following.includes(user._id));
+    const suggestedUsers = filteredUsers.slice(0, 4);
+
+    suggestedUsers.forEach((user) => (user.password = null));
+    res.status(200).json(suggestedUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const freezeAccount = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    user.isFrozen = true;
+    await user.save();
+
+    res.staus(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-export { signupUser, loginUser, logoutUser, followUnfollowUser, updateUser, getUserProfile };
+export { signupUser, loginUser, logoutUser, followUnfollowUser, updateUser, getUserProfile, getSuggestedUsers, freezeAccount };
