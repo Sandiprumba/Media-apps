@@ -26,7 +26,6 @@ const UserPage = () => {
         const res = await fetch(`/api/posts/user/${username}`);
         const data = await res.json();
         setPosts(data);
-        console.log(data, "This is username data");
       } catch (error) {
         showToast("Error", error.message, "error");
         setPosts([]);
@@ -38,7 +37,6 @@ const UserPage = () => {
     getsPosts();
   }, [username, showToast, setPosts, user]);
 
-  console.log("post is here and it is recoil state", posts);
   //when component first render user might be null or uninitialized in this case we dont want to render the component until the user data is available to prevent displaying incomplete or incorrect information..
   if (!user && loading) {
     return (

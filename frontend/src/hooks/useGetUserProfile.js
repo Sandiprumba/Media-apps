@@ -7,7 +7,6 @@ const useGetUserProfile = () => {
   const [loading, setLoading] = useState(true);
   const { username } = useParams();
   const showToast = useShowToast();
-  console.log(username);
 
   useEffect(() => {
     const getUser = async () => {
@@ -16,12 +15,17 @@ const useGetUserProfile = () => {
       try {
         const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
-        console.log("this is hook data", data);
 
         if (data.error) {
           showToast("Error", data.error, "error");
           return;
         }
+        //if user is frozen then display null
+        if (data.isFrozen) {
+          setUser(null);
+          return;
+        }
+
         setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");

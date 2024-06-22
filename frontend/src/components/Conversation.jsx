@@ -1,5 +1,5 @@
 import { Avatar, AvatarBadge, Flex, Stack, useColorModeValue, WrapItem, Text, Image, useColorMode, Box } from "@chakra-ui/react";
-import { BsCheck2All } from "react-icons/bs";
+import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom.js";
 import { selectedConversationAtom } from "../atoms/conversationsAtom.js";
@@ -56,7 +56,7 @@ const Conversation = ({ conversation, isOnline }) => {
               <BsCheck2All size={16} />
             </Box>
           )}
-          <Text fontSize={"xs"}>{lastMessage?.text?.length > 18 ? lastMessage.text.substring(0, 18) + "..." : lastMessage.text}</Text>
+          <Text fontSize={"xs"}>{lastMessage?.text?.length > 18 ? lastMessage.text.substring(0, 18) + "..." : lastMessage.text || <BsFillImageFill size={16} />}</Text>
         </Flex>
       </Stack>
     </Flex>

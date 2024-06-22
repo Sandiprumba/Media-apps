@@ -39,7 +39,6 @@ const CreatePost = () => {
   const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useRecoilState(postsAtom);
-  console.log("recoil post", postsAtom);
   const showToast = useShowToast();
 
   const handleTextChange = (e) => {

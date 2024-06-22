@@ -2,28 +2,24 @@ import { Avatar, Box, Flex, VStack, Text, Link, MenuButton, Menu, Portal, MenuLi
 import { BsInstagram } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
 
-import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
+
+import useFollowUnfollowUser from "../hooks/useFollowUnfollowUser";
 import useShowToast from "../hooks/useShowToast";
 
 // "http://localhost:5173/username";
 
 //this is the user that we look in to their profile
 const UserHeader = ({ user }) => {
-  console.log("props passed", user);
-  const { name, username, bio, profilePic, followers } = user;
+  const { handleFollowUnfollow, following, updating } = useFollowUnfollowUser(user);
+  const showToast = useShowToast();
 
   //GET THE CURRENT USER that is logged in
   const currentUser = useRecoilValue(userAtom);
-  //check the user is follwing or not
-  const [following, setFollowing] = useState(user.followers.includes(currentUser?._id));
-  const [updating, setUpdating] = useState(false);
 
   //display the notification after its done....from chakra ui
-
-  const showToast = useShowToast();
 
   const HandleCopyURLClick = () => {
     //retrieve the current URL of the webpage
@@ -35,54 +31,15 @@ const UserHeader = ({ user }) => {
     });
   };
 
-  //follow unfollow user
-  const handleFollowUnfollow = async () => {
-    if (!currentUser) {
-      showToast("Error", "Please login to follow", "error");
-      return;
-    }
-
-    if (updating) return;
-    setUpdating(true);
-    try {
-      const res = await fetch(`/api/users/follow/${user._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      showToast("Success", "followed successfully");
-      const data = await res.json();
-      if (data.error) {
-        showToast("Error", data.error, "error");
-        return;
-      }
-
-      if (following) {
-        showToast("Success", `unfollowed ${user.name}`, "success");
-        user.followers.pop(); //simulates removing from followers
-      } else {
-        showToast("Success", `followed ${user.name}`, "success");
-        user.followers.push(currentUser?._id); //simulates adding to followers
-      }
-      setFollowing(!following);
-      console.log(data);
-    } catch (error) {
-      showToast("Error", error, "error");
-    } finally {
-      setUpdating(false);
-    }
-  };
-
   return (
     <VStack gap={4} alignItems={"start"}>
       <Flex justifyContent={"space-between"} w={"full"}>
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"}>
-            {name}
+            {user?.name}
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>{username}</Text>
+            <Text fontSize={"sm"}>{user?.username}</Text>
             {/* the color gray,dark is defined inside main.jsx and i am using here 
             ..IN CHAKRA UI YOU CAN DEFINE ATHEME IN ONE PLACE AND THEN ACCESS THE THEMES VALUES THROUGH OUT APPS USING CHAKRA UI STYLES PROPS OR CUSTOM CSS IN JS SYNTAX*/}
             <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
@@ -91,19 +48,19 @@ const UserHeader = ({ user }) => {
           </Flex>
         </Box>
         <Box>
-          {profilePic && (
+          {user?.profilePic && (
             <Avatar
-              name={name}
-              src={profilePic}
+              name={user?.name}
+              src={user?.profilePic}
               size={{
                 base: "md",
                 md: "xl",
               }}
             />
           )}
-          {!profilePic && (
+          {!user?.profilePic && (
             <Avatar
-              name={name}
+              name={user?.name}
               src="/zuck-avatar.png"
               size={{
                 base: "md",
@@ -113,7 +70,7 @@ const UserHeader = ({ user }) => {
           )}
         </Box>
       </Flex>
-      <Text>{bio}</Text>
+      <Text>{user?.bio}</Text>
 
       {currentUser?._id === user._id && (
         // to ensure navigation behaviour remain consistent
@@ -129,7 +86,7 @@ const UserHeader = ({ user }) => {
       )}
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>{followers.length} followers</Text>
+          <Text color={"gray.light"}>{user?.followers.length} followers</Text>
           <Box w="1" bg={"gray.light"} borderRadius={"full"}></Box>
           <Link color={"gray.light"}>instagram.com</Link>
         </Flex>

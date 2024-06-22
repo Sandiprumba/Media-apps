@@ -33,7 +33,7 @@ const PostPage = () => {
           showToast("Error", data.error, "error");
           return;
         }
-        console.log("this is data", data);
+
         setPosts([data]); //update the recoil state of post
       } catch (error) {
         showToast("Error", error.message, "error");

@@ -8,6 +8,7 @@ import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtoms";
 import { BsFillChatQuoteFill } from "react-icons/bs";
+import { MdOutlineSettings } from "react-icons/md";
 
 const Header = () => {
   //colorMode is a property provided byu chakra ui's useColormode hook that allows to access and control the current color mode of ui
@@ -38,6 +39,10 @@ const Header = () => {
           </Link>
           <Link as={RouterLink} to={`/chat`} onClick={"hello"}>
             <BsFillChatQuoteFill size={20} />
+          </Link>
+
+          <Link as={RouterLink} to={"/setting"}>
+            <MdOutlineSettings size={20} />
           </Link>
 
           <Button size={"xs"} onClick={logout}>

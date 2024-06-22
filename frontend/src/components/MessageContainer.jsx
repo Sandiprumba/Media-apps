@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { conversationsAtom, selectedConversationAtom } from "../atoms/conversationsAtom";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
+import messageSound from "../assets/sounds/message.mp3";
 
 const MessageContainer = () => {
   const showToast = useShowToast();
@@ -28,6 +29,12 @@ const MessageContainer = () => {
       if (selectedConversation._id === message.conversationId) {
         setMessages((prevMessages) => [...prevMessages, message]);
       }
+      if (!document.hasFocus()) {
+        //play audio
+        const sound = new Audio(messageSound);
+        sound.play();
+      }
+
       setConversations((prev) => {
         const updatedConversation = prev.map((conversation) => {
           if (conversation._id === message.conversationId) {

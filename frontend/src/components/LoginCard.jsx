@@ -38,11 +38,10 @@ export default function LoginCard() {
         showToast("Error", data.error, "error");
         return;
       }
-      console.log(data);
+
       localStorage.setItem("user-apps", JSON.stringify(data));
       setUser(data);
     } catch (error) {
-      console.log(error);
       showToast("Error", error, "error");
     } finally {
       setLoading(false);

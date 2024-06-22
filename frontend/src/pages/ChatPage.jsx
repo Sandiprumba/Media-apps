@@ -35,7 +35,6 @@ const ChatPage = () => {
           return;
         }
         setConversations(data);
-        console.log(data);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {
@@ -110,7 +109,7 @@ const ChatPage = () => {
           },
         ],
       };
-      console.log("mock convo created", mockConversation);
+
       setConversations((prevConvs) => [...prevConvs, mockConversation]);
     } catch (error) {
       showToast("Error", error.message, "error");

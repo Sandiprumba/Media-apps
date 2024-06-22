@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom.js";
 
@@ -12,13 +12,14 @@ import HomePage from "./pages/HomePage.jsx";
 import UpdateProfilePage from "./pages/UpdateProfilePage.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import ChatPage from "./pages/ChatPage";
+import SettingPage from "./pages/SettingPage";
 
 function App() {
   const user = useRecoilValue(userAtom);
-  console.log(user);
+  const { pathname } = useLocation();
   return (
     <Box position={"relative"} w="full">
-      <Container maxW="620px">
+      <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
         <Header />
         <Routes>
           <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
@@ -39,6 +40,7 @@ function App() {
           />
           <Route path="/:username/post/:pid" element={<PostPage />} />
           <Route path="/chat/" element={user ? <ChatPage /> : <Navigate to="/auth" />} />
+          <Route path="/setting" element={<SettingPage />} />
         </Routes>
       </Container>
     </Box>
