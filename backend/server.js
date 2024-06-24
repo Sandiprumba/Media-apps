@@ -1,9 +1,10 @@
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary"; //to upload the pictures
-import { app, server, io } from "./socket/socket.js";
+import { app, server } from "./socket/socket.js";
 
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -12,7 +13,8 @@ import messageRoutes from "./routes/messageRoutes.js";
 dotenv.config();
 connectDB();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3006;
+const __dirname = path.resolve();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -31,5 +33,18 @@ app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
+
+//http://localhost:3006 => backend ..make both in one server
+//http://localhost:3000 => frontend
+//if same url wouldnt have cors issue
+
+//CONVERT BACKEND AND FRONTEND SAME URL
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 server.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`));
