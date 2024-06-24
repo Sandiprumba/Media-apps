@@ -14,8 +14,9 @@ export const SocketContextProvider = ({ children }) => {
   const user = useRecoilValue(userAtom);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
+  //in development it should be local host in pro only root connection
   useEffect(() => {
-    const socket = io("http://localhost:3006", {
+    const socket = io("/", {
       query: {
         userId: user?._id,
       },
